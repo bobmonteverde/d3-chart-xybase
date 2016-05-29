@@ -1,0 +1,40 @@
+<html>
+  <body>
+
+    <svg id="chart_xybase_example" style="width:600px;height:400px"></svg>
+
+    <script src="https://d3js.org/d3-array.v0.7.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>
+    <script src="https://d3js.org/d3-color.v0.4.min.js"></script>
+    <script src="https://d3js.org/d3-format.v0.5.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v0.5.min.js"></script>
+    <script src="https://d3js.org/d3-time.v0.2.min.js"></script>
+    <script src="https://d3js.org/d3-time-format.v0.3.min.js"></script>
+    <script src="https://d3js.org/d3-scale.v0.7.min.js"></script>
+    <script src="https://d3js.org/d3-selection.v0.7.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
+    <script src="https://d3js.org/d3-ease.v0.7.min.js"></script>
+    <script src="https://d3js.org/d3-timer.v0.4.min.js"></script>
+    <script src="https://d3js.org/d3-transition.v0.2.min.js"></script>
+    <script src="https://d3js.org/d3-axis.v0.3.min.js"></script>
+
+    <script src="../build/d3-chart-xybase.js"></script>
+
+    <script>
+
+    var bottomScale = d3_scale.scaleLinear().range([0, 540]),
+        leftScale = d3_scale.scaleLinear().range([360, 0])
+
+    var chartBase = d3_chart_xybase.chart_xybase()
+      .bottomScale(bottomScale)
+      .leftScale(leftScale)
+      .bottomLabel('X Axis')
+      .leftLabel('Y Axis')
+
+    d3_selection.select('#chart_xybase_example')
+      .call(chartBase)
+
+    </script>
+
+  </body>
+</html>
