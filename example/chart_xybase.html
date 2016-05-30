@@ -7,7 +7,7 @@
     }
     </style>
 
-    <svg id="chart_xybase_example" style="width:600px;height:400px"></svg>
+    <svg id="chart_xybase_example" style="width:500px;height:300px"></svg>
 
     <script src="https://d3js.org/d3-array.v0.7.min.js"></script>
     <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>
@@ -28,7 +28,7 @@
 
     <script>
 
-    var bottomScale = d3_scale.scaleLinear().range([0, 440]),
+    var bottomScale = d3_scale.scaleLinear().range([0, 450]),
         leftScale = d3_scale.scaleLinear().range([260, 0])
 
     var chartBase = d3_chart_xybase.chart_xybase()
@@ -38,16 +38,17 @@
       .renderAxisRight(true)
       .renderAxisBottom(false)
       .renderAxisTop(true)
-      //.margin({right: 50, left: 10, top: 30, bottom: 10})
+      .margin({right: 40, left: 10, top: 30, bottom: 10})
       //.scaleBottom(bottomScale)
       //.scaleLeft(leftScale)
       .scaleTop(bottomScale)
       .scaleRight(leftScale)
       .labelTop('X Axis')
-      .labelLeft('Y Axis')
-      .labelPosLeft('bottom')
+      //.labelLeft('Y Axis')
       .labelRight('Y Axis')
-      .labelPosRight('bottom')
+      .labelPosTop('center')
+      .labelPosRight('middle')
+      .labelOutRight(true)
 
     d3_selection.select('#chart_xybase_example')
       .call(chartBase)

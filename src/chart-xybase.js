@@ -26,10 +26,14 @@ export default function() {
       labelTop       = null,
       labelLeft      = null,
       labelRight     = null,
-      labelPosBottom = 'left',
+      labelPosBottom = 'right',
       labelPosTop    = 'right',
       labelPosLeft   = 'top',
       labelPosRight  = 'top',
+      labelOutBottom = false,
+      labelOutTop    = false,
+      labelOutLeft   = false,
+      labelOutRight  = false,
       tickSizeBottom = height => [-height, 1],
       tickSizeTop    = height => [-height, 1],
       tickSizeLeft   = width => [-width, 1],
@@ -110,6 +114,7 @@ export default function() {
       g.select('.d3-chart-axisBottom .d3-chart-label')
           .attr('x', labelBottomX)
           .attr('dx', labelBottomDX)
+          .attr('y', labelOutBottom ? margin.bottom : 0)
           .style('text-anchor', labelBottomAnchor)
           .text(labelBottom)
       g.select('.d3-chart-axisBottom .d3-chart-axis')
@@ -156,6 +161,7 @@ export default function() {
       g.select('.d3-chart-axisTop .d3-chart-label')
           .attr('x', labelTopX)
           .attr('dx', labelTopDX)
+          .attr('y', labelOutTop ? -margin.top : 0)
           .style('text-anchor', labelTopAnchor)
           .text(labelTop)
       g.select('.d3-chart-axisTop .d3-chart-axis')
@@ -203,6 +209,7 @@ export default function() {
       g.select('.d3-chart-axisLeft .d3-chart-label')
           .attr('x', labelLeftX)
           .attr('dx', labelLeftDX)
+          .attr('y', labelOutLeft ? -margin.left : 0)
           .style('text-anchor', labelLeftAnchor)
           .text(labelLeft)
       g.select('.d3-chart-axisLeft .d3-chart-axis')
@@ -249,6 +256,7 @@ export default function() {
       g.select('.d3-chart-axisRight .d3-chart-label')
           .attr('x', labelRightX)
           .attr('dx', labelRightDX)
+          .attr('y', labelOutRight ? -margin.right : 0)
           .style('text-anchor', labelRightAnchor)
           .text(labelRight)
       g.select('.d3-chart-axisRight .d3-chart-axis')
@@ -362,6 +370,30 @@ export default function() {
   chart.labelPosRight = function(_) {
     if (!arguments.length) return labelPosRight
     labelPosRight = _
+    return chart
+  }
+
+  chart.labelOutBottom = function(_) {
+    if (!arguments.length) return labelOutBottom
+    labelOutBottom = _
+    return chart
+  }
+
+  chart.labelOutTop = function(_) {
+    if (!arguments.length) return labelOutTop
+    labelOutTop = _
+    return chart
+  }
+
+  chart.labelOutLeft = function(_) {
+    if (!arguments.length) return labelOutLeft
+    labelOutLeft = _
+    return chart
+  }
+
+  chart.labelOutRight = function(_) {
+    if (!arguments.length) return labelOutRight
+    labelOutRight = _
     return chart
   }
 
