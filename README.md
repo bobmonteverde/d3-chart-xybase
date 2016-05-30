@@ -96,7 +96,7 @@ If true, renders bottom axis (bottomScale must be set) and returns the chart.
 If no argument passed, returns renderAxisTop setting.
 Default: false
 
-<a name="renderAxisLeft" href="#renderAxisLeft">#</a> chart.<b>renderAxisLeft</b>([<i>bool</i]>)
+<a name="renderAxisLeft" href="#renderAxisLeft">#</a> chart.<b>renderAxisLeft</b>([<i>bool</i>])
 
 If true, renders bottom axis (bottomScale must be set) and returns the chart.
 If no argument passed, returns renderAxisLeft setting.
