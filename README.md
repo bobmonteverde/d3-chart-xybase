@@ -29,6 +29,11 @@ var chart = d3_chart_xybase.chart_xybase()
 </script>
 ```
 
+## Running the example
+
+After running `npm install` in the root folder, to run the example start a simple server in the root folder.
+For example, on linux/mac you can run `python -m SimpleHTTPServer 8888` and open `http://localhost:8888/example/chart_xybase.html`
+
 ## API Reference
 
 <a name="chart_xybase" href="#chart_xybase">#</a> d3_chart_xybase.<b>chart_xybase</b>()
