@@ -5,6 +5,10 @@
     .d3-chart-label {
       fill: #000;
     }
+
+    .d3-chart-axis .d3-chart-y .tick line {
+      stroke: #aaa !important;
+    }
     </style>
 
     <svg id="chart_xybase_example" style="width:500px;height:300px"></svg>
@@ -29,26 +33,28 @@
     <script>
 
     var bottomScale = d3_scale.scaleLinear().range([0, 450]),
-        leftScale = d3_scale.scaleLinear().range([260, 0])
+        leftScale = d3_scale.scaleLinear().range([260, 0]).domain([0,5])
 
     var chartBase = d3_chart_xybase.chart_xybase()
       .width(500)
       .height(300)
-      .renderAxisLeft(false)
-      .renderAxisRight(true)
-      .renderAxisBottom(false)
-      .renderAxisTop(true)
-      .margin({right: 40, left: 10, top: 30, bottom: 10})
-      //.scaleBottom(bottomScale)
-      //.scaleLeft(leftScale)
-      .scaleTop(bottomScale)
-      .scaleRight(leftScale)
-      .labelTop('X Axis')
-      //.labelLeft('Y Axis')
-      .labelRight('Y Axis')
-      .labelPosTop('center')
-      .labelPosRight('middle')
-      .labelOutRight(true)
+      //.renderAxisLeft(false)
+      //.renderAxisRight(true)
+      //.renderAxisBottom(false)
+      //.renderAxisTop(true)
+      //.margin({right: 40, left: 10, top: 30, bottom: 10})
+      .scaleBottom(bottomScale)
+      .scaleLeft(leftScale)
+      //.scaleTop(bottomScale)
+      //.scaleRight(leftScale)
+      .labelBottom('X Axis')
+      .labelLeft('Y Axis')
+      .labelPosBottom(['outside', 'center'])
+      .labelPosLeft(['outside', 'middle'])
+      //.tickSizeBottom([3])
+
+    chartBase.axisBottom()
+      .tickValues([.5,1])
 
     d3_selection.select('#chart_xybase_example')
       .call(chartBase)
