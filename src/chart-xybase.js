@@ -10,30 +10,34 @@ export default function() {
   // Public Variables with Default Settings
   //------------------------------------------------------------
 
-  // var bottomAxis     = d3.svg.axis(),
-  // topAxis        = d3.svg.axis(),
-  // leftAxis       = d3.svg.axis(),
-  // rightAxis      = d3.svg.axis(),
-  var bottomAxis,
-      topAxis,
-      leftAxis,
-      rightAxis,
-      bottomScale    = null,
-      topScale       = null,
-      leftScale      = null,
-      rightScale     = null,
-      bottomLabel    = null,
-      topLabel       = null,
-      leftLabel      = null,
-      rightLabel     = null,
-      bottomTickSize = height => [-height, 1],
-      topTickSize    = height => [-height, 1],
-      leftTickSize   = width => [-width, 1],
-      rightTickSize  = width => [-width, 1],
-      bottomTicks    = width => [Math.round(width/80)],
-      topTicks       = width => [Math.round(width/80)],
-      leftTicks      = height => [Math.round(height/40)],
-      rightTicks     = height => [Math.round(height/40)],
+  // var axisBottom     = d3.svg.axis(),
+  // axisTop        = d3.svg.axis(),
+  // axisLeft       = d3.svg.axis(),
+  // axisRight      = d3.svg.axis(),
+  var axisBottom,
+      axisTop,
+      axisLeft,
+      axisRight,
+      scaleBottom    = null,
+      scaleTop       = null,
+      scaleLeft      = null,
+      scaleRight     = null,
+      labelBottom    = null,
+      labelTop       = null,
+      labelLeft      = null,
+      labelRight     = null,
+      labelPosBottom = 'left',
+      labelPosTop    = 'right',
+      labelPosLeft   = 'top',
+      labelPosRight  = 'top',
+      tickSizeBottom = height => [-height, 1],
+      tickSizeTop    = height => [-height, 1],
+      tickSizeLeft   = width => [-width, 1],
+      tickSizeRight  = width => [-width, 1],
+      ticksBottom    = width => [Math.round(width/80)],
+      ticksTop       = width => [Math.round(width/80)],
+      ticksLeft      = height => [Math.round(height/40)],
+      ticksRight     = height => [Math.round(height/40)],
       renderBottom   = true,
       renderTop      = false,
       renderLeft     = true,
@@ -60,10 +64,10 @@ export default function() {
     var gEnter    = wrapEnter.append('g')
     var g         = selection.select('.d3-chart-xybase g')
 
-    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-bottomAxis')
-    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-topAxis')
-    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-leftAxis')
-    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-rightAxis')
+    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisBottom')
+    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisTop')
+    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisLeft')
+    gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisRight')
 
     g.attr('transform', `translate(${margin.left},${margin.top})`)
 
@@ -73,27 +77,44 @@ export default function() {
     // Bottom Axis
 
     if (renderBottom) {
-      // bottomAxis
-      // .scale(bottomScale)
-      // .orient('bottom')
-      bottomAxis = d3_axis.axisBottom(bottomScale)
-      bottomAxis
-        .tickSize.apply(bottomAxis, bottomTickSize(availableHeight))
-      bottomAxis
-        .ticks.apply(bottomAxis, bottomTicks(availableWidth))
-      gEnter.select('.d3-chart-bottomAxis').append('g')
+      var labelBottomX, labelBottomDX, labelBottomAnchor
+      switch (labelPosBottom) {
+        case 'left':
+          labelBottomX = 0
+          labelBottomDX = 6
+          labelBottomAnchor = 'start'
+          break
+        case 'center':
+          labelBottomX = availableWidth / 2
+          labelBottomDX = 0
+          labelBottomAnchor = 'middle'
+          break
+        case 'right':
+        default:
+          labelBottomX = availableWidth
+          labelBottomDX = -6
+          labelBottomAnchor = 'end'
+          break
+      }
+
+      axisBottom = d3_axis.axisBottom(scaleBottom)
+      axisBottom
+        .tickSize.apply(axisBottom, tickSizeBottom(availableHeight))
+      axisBottom
+        .ticks.apply(axisBottom, ticksBottom(availableWidth))
+      gEnter.select('.d3-chart-axisBottom').append('g')
           .attr('class', 'd3-chart-x d3-chart-axis')
         .append('text')
           .attr('class', 'd3-chart-label')
-          .attr('dx', -6)
-          .attr('dy', -6)
-          .style('text-anchor', 'end')
-      g.select('.d3-chart-bottomAxis .d3-chart-label')
-          .attr('x', availableWidth)
-          .text(bottomLabel)
-      g.select('.d3-chart-bottomAxis .d3-chart-axis')
+          .attr('dy', '-.3em')
+      g.select('.d3-chart-axisBottom .d3-chart-label')
+          .attr('x', labelBottomX)
+          .attr('dx', labelBottomDX)
+          .style('text-anchor', labelBottomAnchor)
+          .text(labelBottom)
+      g.select('.d3-chart-axisBottom .d3-chart-axis')
           .attr('transform', `translate(0,${availableHeight})`)
-          .call(bottomAxis)
+          .call(axisBottom)
     }
 
     //------------------------------------------------------------
@@ -102,27 +123,44 @@ export default function() {
     // Top Axis
 
     if (renderTop) {
-      // topAxis
-      // .scale(topScale)
-      // .orient('top')
-      topAxis = d3_axis.axisTop(topScale)
-      topAxis
-        .tickSize.apply(topAxis, topTickSize(availableHeight))
-      topAxis
-        .ticks.apply(topAxis, topTicks(availableWidth))
-      gEnter.select('.d3-chart-topAxis').append('g')
+      var labelTopX, labelTopDX, labelTopAnchor
+      switch (labelPosTop) {
+        case 'left':
+          labelTopX = 0
+          labelTopDX = 6
+          labelTopAnchor = 'start'
+          break
+        case 'center':
+          labelTopX = availableWidth / 2
+          labelTopDX = 0
+          labelTopAnchor = 'middle'
+          break
+        case 'right':
+        default:
+          labelTopX = availableWidth
+          labelTopDX = -6
+          labelTopAnchor = 'end'
+          break
+      }
+
+      axisTop = d3_axis.axisTop(scaleTop)
+      axisTop
+        .tickSize.apply(axisTop, tickSizeTop(availableHeight))
+      axisTop
+        .ticks.apply(axisTop, ticksTop(availableWidth))
+      gEnter.select('.d3-chart-axisTop').append('g')
           .attr('class', 'd3-chart-x d3-chart-axis')
         .append('text')
           .attr('class', 'd3-chart-label')
-          .attr('dy', '1em')
-          .attr('dx', '-2em')
-          .style('text-anchor', 'end')
-      g.select('.d3-chart-topAxis .d3-chart-label')
-          .attr('x', availableWidth)
-          .text(topLabel)
-      g.select('.d3-chart-topAxis .d3-chart-axis')
+          .attr('dy', '1.2em')
+      g.select('.d3-chart-axisTop .d3-chart-label')
+          .attr('x', labelTopX)
+          .attr('dx', labelTopDX)
+          .style('text-anchor', labelTopAnchor)
+          .text(labelTop)
+      g.select('.d3-chart-axisTop .d3-chart-axis')
           //.attr('transform', 'translate(0,0)')
-          .call(topAxis)
+          .call(axisTop)
     }
 
     //------------------------------------------------------------
@@ -131,27 +169,44 @@ export default function() {
     // Left Axis
 
     if (renderLeft) {
-      console.log('renderLeft')
-      // leftAxis
-      // .scale(leftScale)
-      // .orient('left')
-      leftAxis = d3_axis.axisLeft(leftScale)
-      leftAxis
-        .tickSize.apply(leftAxis, leftTickSize(availableWidth))
-      leftAxis
-        .ticks.apply(leftAxis, leftTicks(availableHeight))
-      gEnter.select('.d3-chart-leftAxis').append('g')
+      var labelLeftX, labelLeftDX, labelLeftAnchor
+      switch (labelPosLeft) {
+        case 'top':
+          labelLeftX = 0
+          labelLeftDX = -6
+          labelLeftAnchor = 'end'
+          break
+        case 'middle':
+          labelLeftX = -availableHeight / 2
+          labelLeftDX = 0
+          labelLeftAnchor = 'middle'
+          break
+        case 'bottom':
+        default:
+          labelLeftX = -availableHeight
+          labelLeftDX = 6
+          labelLeftAnchor = 'start'
+          break
+      }
+
+      axisLeft = d3_axis.axisLeft(scaleLeft)
+      axisLeft
+        .tickSize.apply(axisLeft, tickSizeLeft(availableWidth))
+      axisLeft
+        .ticks.apply(axisLeft, ticksLeft(availableHeight))
+      gEnter.select('.d3-chart-axisLeft').append('g')
           .attr('class', 'd3-chart-y d3-chart-axis')
         .append('text')
           .attr('class', 'd3-chart-label')
-          .attr('transform', 'rotate(90)')
-          .attr('dx', 6)
-          .attr('dy', -6)
-          .style('text-anchor', 'start')
-      g.select('.d3-chart-leftAxis .d3-chart-label')
-          .text(leftLabel)
-      g.select('.d3-chart-leftAxis .d3-chart-axis')
-          .call(leftAxis)
+          .attr('transform', 'rotate(-90)')
+          .attr('dy', '1.2em')
+      g.select('.d3-chart-axisLeft .d3-chart-label')
+          .attr('x', labelLeftX)
+          .attr('dx', labelLeftDX)
+          .style('text-anchor', labelLeftAnchor)
+          .text(labelLeft)
+      g.select('.d3-chart-axisLeft .d3-chart-axis')
+          .call(axisLeft)
     }
 
     //------------------------------------------------------------
@@ -160,27 +215,45 @@ export default function() {
     // Right Axis
 
     if (renderRight) {
-      // rightAxis
-      // .scale(rightScale)
-      // .orient('right')
-      rightAxis = d3_axis.axisRight(rightScale)
-      rightAxis
-        .tickSize.apply(rightAxis, rightTickSize(availableWidth))
-      rightAxis
-        .ticks.apply(rightAxis, rightTicks(availableHeight))
-      gEnter.select('.d3-chart-rightAxis').append('g')
+      var labelRightX, labelRightDX, labelRightAnchor
+      switch (labelPosRight) {
+        case 'top':
+          labelRightX = 0
+          labelRightDX = 6
+          labelRightAnchor = 'start'
+          break
+        case 'middle':
+          labelRightX = availableHeight / 2
+          labelRightDX = 0
+          labelRightAnchor = 'middle'
+          break
+        case 'bottom':
+        default:
+          labelRightX = availableHeight
+          labelRightDX = -6
+          labelRightAnchor = 'end'
+          break
+      }
+
+      axisRight = d3_axis.axisRight(scaleRight)
+      axisRight
+        .tickSize.apply(axisRight, tickSizeRight(availableWidth))
+      axisRight
+        .ticks.apply(axisRight, ticksRight(availableHeight))
+      gEnter.select('.d3-chart-axisRight').append('g')
           .attr('class', 'd3-chart-y d3-chart-axis')
         .append('text')
           .attr('class', 'd3-chart-label')
-          .attr('transform', 'rotate(-90)')
-          .attr('dy', -6)
-          .attr('dx', -6)
-          .style('text-anchor', 'end')
-      g.select('.d3-chart-rightAxis .d3-chart-label')
-          .text(rightLabel)
-      g.select('.d3-chart-rightAxis .d3-chart-axis')
+          .attr('transform', 'rotate(90)')
+          .attr('dy', '1.2em')
+      g.select('.d3-chart-axisRight .d3-chart-label')
+          .attr('x', labelRightX)
+          .attr('dx', labelRightDX)
+          .style('text-anchor', labelRightAnchor)
+          .text(labelRight)
+      g.select('.d3-chart-axisRight .d3-chart-axis')
           .attr('transform', `translate(${availableWidth},0)`)
-          .call(rightAxis)
+          .call(axisRight)
     }
 
     //------------------------------------------------------------
@@ -191,128 +264,152 @@ export default function() {
   // Expose Public API
   //------------------------------------------------------------
 
-  chart.bottomAxis = bottomAxis
-  chart.topAxis    = topAxis
-  chart.leftAxis   = leftAxis
-  chart.rightAxis  = rightAxis
+  chart.axisBottom = axisBottom
+  chart.axisTop    = axisTop
+  chart.axisLeft   = axisLeft
+  chart.axisRight  = axisRight
 
-  chart.bottomScale = function(_) {
-    if (!arguments.length) return bottomScale
-    bottomScale = _
+  chart.scaleBottom = function(_) {
+    if (!arguments.length) return scaleBottom
+    scaleBottom = _
     return chart
   }
 
-  chart.topScale = function(_) {
-    if (!arguments.length) return topScale
-    topScale = _
+  chart.scaleTop = function(_) {
+    if (!arguments.length) return scaleTop
+    scaleTop = _
     return chart
   }
 
-  chart.leftScale = function(_) {
-    if (!arguments.length) return leftScale
-    leftScale = _
+  chart.scaleLeft = function(_) {
+    if (!arguments.length) return scaleLeft
+    scaleLeft = _
     return chart
   }
 
-  chart.rightScale = function(_) {
-    if (!arguments.length) return rightScale
-    rightScale = _
+  chart.scaleRight = function(_) {
+    if (!arguments.length) return scaleRight
+    scaleRight = _
     return chart
   }
 
-  chart.renderBottomAxis = function(_) {
+  chart.renderAxisBottom = function(_) {
     if (!arguments.length) return renderBottom
     renderBottom = _
     return chart
   }
 
-  chart.renderTopAxis = function(_) {
+  chart.renderAxisTop = function(_) {
     if (!arguments.length) return renderTop
     renderTop = _
     return chart
   }
 
-  chart.renderLeftAxis = function(_) {
+  chart.renderAxisLeft = function(_) {
     if (!arguments.length) return renderLeft
     renderLeft = _
     return chart
   }
 
-  chart.renderRightAxis = function(_) {
+  chart.renderAxisRight = function(_) {
     if (!arguments.length) return renderRight
     renderRight = _
     return chart
   }
 
-  chart.bottomLabel = function(_) {
-    if (!arguments.length) return bottomLabel
-    bottomLabel = _
+  chart.labelBottom = function(_) {
+    if (!arguments.length) return labelBottom
+    labelBottom = _
     return chart
   }
 
-  chart.topLabel = function(_) {
-    if (!arguments.length) return topLabel
-    topLabel = _
+  chart.labelTop = function(_) {
+    if (!arguments.length) return labelTop
+    labelTop = _
     return chart
   }
 
-  chart.leftLabel = function(_) {
-    if (!arguments.length) return leftLabel
-    leftLabel = _
+  chart.labelLeft = function(_) {
+    if (!arguments.length) return labelLeft
+    labelLeft = _
     return chart
   }
 
-  chart.rightLabel = function(_) {
-    if (!arguments.length) return rightLabel
-    rightLabel = _
+  chart.labelRight = function(_) {
+    if (!arguments.length) return labelRight
+    labelRight = _
     return chart
   }
 
-  chart.bottomTickSize = function(_) {
-    if (!arguments.length) return bottomTickSize
-    bottomTickSize = functor(_)
+  chart.labelPosBottom = function(_) {
+    if (!arguments.length) return labelPosBottom
+    labelPosBottom = _
     return chart
   }
 
-  chart.topTickSize = function(_) {
-    if (!arguments.length) return topTickSize
-    topTickSize = functor(_)
+  chart.labelPosTop = function(_) {
+    if (!arguments.length) return labelPosTop
+    labelPosTop = _
     return chart
   }
 
-  chart.leftTickSize = function(_) {
-    if (!arguments.length) return leftTickSize
-    leftTickSize = functor(_)
+  chart.labelPosLeft = function(_) {
+    if (!arguments.length) return labelPosLeft
+    labelPosLeft = _
     return chart
   }
 
-  chart.rightTickSize = function(_) {
-    if (!arguments.length) return rightTickSize
-    rightTickSize = functor(_)
+  chart.labelPosRight = function(_) {
+    if (!arguments.length) return labelPosRight
+    labelPosRight = _
     return chart
   }
 
-  chart.bottomTicks = function(_) {
-    if (!arguments.length) return bottomTicks
-    bottomTicks = functor(_)
+  chart.tickSizeBottom = function(_) {
+    if (!arguments.length) return tickSizeBottom
+    tickSizeBottom = functor(_)
     return chart
   }
 
-  chart.topTicks = function(_) {
-    if (!arguments.length) return topTicks
-    topTicks = functor(_)
+  chart.tickSizeTop = function(_) {
+    if (!arguments.length) return tickSizeTop
+    tickSizeTop = functor(_)
     return chart
   }
 
-  chart.leftTicks = function(_) {
-    if (!arguments.length) return leftTicks
-    leftTicks = functor(_)
+  chart.tickSizeLeft = function(_) {
+    if (!arguments.length) return tickSizeLeft
+    tickSizeLeft = functor(_)
     return chart
   }
 
-  chart.rightTicks = function(_) {
-    if (!arguments.length) return rightTicks
-    rightTicks = functor(_)
+  chart.tickSizeRight = function(_) {
+    if (!arguments.length) return tickSizeRight
+    tickSizeRight = functor(_)
+    return chart
+  }
+
+  chart.ticksBottom = function(_) {
+    if (!arguments.length) return ticksBottom
+    ticksBottom = functor(_)
+    return chart
+  }
+
+  chart.ticksTop = function(_) {
+    if (!arguments.length) return ticksTop
+    ticksTop = functor(_)
+    return chart
+  }
+
+  chart.ticksLeft = function(_) {
+    if (!arguments.length) return ticksLeft
+    ticksLeft = functor(_)
+    return chart
+  }
+
+  chart.ticksRight = function(_) {
+    if (!arguments.length) return ticksRight
+    ticksRight = functor(_)
     return chart
   }
 
