@@ -11,13 +11,14 @@
     }
     </style>
 
+    <button id="update">Update</button>
     <svg id="chart_xybase_example" style="width:500px;height:300px"></svg>
 
     <script src="https://d3js.org/d3-array.v0.7.min.js"></script>
-    <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v0.2.min.js"></script>
     <script src="https://d3js.org/d3-color.v0.4.min.js"></script>
     <script src="https://d3js.org/d3-format.v0.5.min.js"></script>
-    <script src="https://d3js.org/d3-interpolate.v0.5.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v0.8.min.js"></script>
     <script src="https://d3js.org/d3-time.v0.2.min.js"></script>
     <script src="https://d3js.org/d3-time-format.v0.3.min.js"></script>
     <script src="https://d3js.org/d3-scale.v0.7.min.js"></script>
@@ -25,8 +26,13 @@
     <script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
     <script src="https://d3js.org/d3-ease.v0.7.min.js"></script>
     <script src="https://d3js.org/d3-timer.v0.4.min.js"></script>
-    <script src="https://d3js.org/d3-transition.v0.2.min.js"></script>
+    <script src="https://d3js.org/d3-transition.v0.2.js"></script>
     <script src="https://d3js.org/d3-axis.v0.3.min.js"></script>
+
+    <!--
+    <script src="https://d3js.org/d3.v4.0.0-alpha.44.min.js"></script>
+    -->
+
 
     <script src="../build/d3-chart-xybase.js"></script>
 
@@ -52,11 +58,24 @@
       //.scaleTop(bottomScale)
       //.scaleRight(leftScale)
 
-    chartBase.axisBottom()
-      .tickValues([.5,1])
+    //chartBase.axisBottom()
+      //.tickValues([.5,1])
 
-    d3_selection.select('#chart_xybase_example')
-      .call(chartBase)
+    update()
+
+    d3_selection.select('#update')
+        .on('click', update)
+
+    function update() {
+      chartBase.scaleBottom()
+        .domain([0, Math.random() * 10])
+      chartBase.scaleLeft()
+        .domain([0, Math.random() * 10])
+
+      d3_selection.select('#chart_xybase_example')
+        .call(chartBase)
+    }
+
 
     </script>
 

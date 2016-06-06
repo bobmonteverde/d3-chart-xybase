@@ -1,53 +1,56 @@
+import d3_transition from 'd3-transition'
 import d3_axis from 'd3-axis'
 
 function functor (f) {
   return typeof f === 'function' ? f : function() { return f }
 }
 
-export default function() {
+export default function chart_xybase () {
 
   //============================================================
   // Public Variables with Default Settings
   //------------------------------------------------------------
 
-  var axisBottom,
-      axisTop,
-      axisLeft,
-      axisRight,
-      scaleBottom    = null,
-      scaleTop       = null,
-      scaleLeft      = null,
-      scaleRight     = null,
-      labelBottom    = null,
-      labelTop       = null,
-      labelLeft      = null,
-      labelRight     = null,
-      labelPosBottom = ['inside', 'right'],
-      labelPosTop    = ['inside', 'right'],
-      labelPosLeft   = ['inside', 'top'],
-      labelPosRight  = ['inside', 'top'],
-      tickSizeBottom = height => [-height, 1],
-      tickSizeTop    = height => [-height, 1],
-      tickSizeLeft   = width => [-width, 1],
-      tickSizeRight  = width => [-width, 1],
-      ticksBottom    = width => [Math.round( width / 80 )],
-      ticksTop       = width => [Math.round( width / 80 )],
-      ticksLeft      = height => [Math.round( height / 40 )],
-      ticksRight     = height => [Math.round( height / 40 )],
-      renderBottom   = true,
-      renderTop      = false,
-      renderLeft     = true,
-      renderRight    = false,
-      height         = 400,
-      width          = 600,
-      margin         = { top: 10, right: 10, bottom: 30, left: 40 }
+  let axisBottom
+  let axisTop
+  let axisLeft
+  let axisRight
+  let scaleBottom    = null
+  let scaleTop       = null
+  let scaleLeft      = null
+  let scaleRight     = null
+  let labelBottom    = null
+  let labelTop       = null
+  let labelLeft      = null
+  let labelRight     = null
+  let labelPosBottom = ['inside', 'right']
+  let labelPosTop    = ['inside', 'right']
+  let labelPosLeft   = ['inside', 'top']
+  let labelPosRight  = ['inside', 'top']
+  let tickSizeBottom = height => [-height, 1]
+  let tickSizeTop    = height => [-height, 1]
+  let tickSizeLeft   = width => [-width, 1]
+  let tickSizeRight  = width => [-width, 1]
+  let ticksBottom    = width => [Math.round( width / 80 )]
+  let ticksTop       = width => [Math.round( width / 80 )]
+  let ticksLeft      = height => [Math.round( height / 40 )]
+  let ticksRight     = height => [Math.round( height / 40 )]
+  let renderBottom   = true
+  let renderTop      = false
+  let renderLeft     = true
+  let renderRight    = false
+  let height         = 400
+  let width          = 600
+  let margin         = { top: 10, right: 10, bottom: 30, left: 40 }
+  let transition     = () => d3_transition.transition().duration(1000)
 
   //------------------------------------------------------------
 
   function chart(context) {
-    var selection = context.selection ? context.selection() : context,
-        availableHeight = height - margin.top - margin.bottom,
-        availableWidth = width - margin.left - margin.right
+    let selection = context.selection ? context.selection() : context
+    let availableHeight = height - margin.top - margin.bottom
+    let availableWidth = width - margin.left - margin.right
+    let t = transition()
 
     if (availableHeight < 0) availableHeight = 0
     if (availableWidth < 0)  availableWidth = 0
@@ -55,10 +58,10 @@ export default function() {
     //------------------------------------------------------------
     // Setup Chart Layers
 
-    var wrap      = selection.selectAll('g.d3-chart-xybase').data([null])
-    var wrapEnter = wrap.enter().append('g').attr('class', 'd3-chart-xybase')
-    var gEnter    = wrapEnter.append('g')
-    var g         = selection.select('.d3-chart-xybase g')
+    let wrap      = selection.selectAll('g.d3-chart-xybase').data([null])
+    let wrapEnter = wrap.enter().append('g').attr('class', 'd3-chart-xybase')
+    let gEnter    = wrapEnter.append('g')
+    let g         = selection.select('.d3-chart-xybase g')
 
     gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisBottom')
     gEnter.append('g').attr('class', 'd3-chart-axis d3-chart-axisTop')
@@ -73,7 +76,7 @@ export default function() {
     // Bottom Axis
 
     if (renderBottom && scaleBottom) {
-      var labelBottomX, labelBottomDX, labelBottomAnchor
+      let labelBottomX, labelBottomDX, labelBottomAnchor
       switch (labelPosBottom[1]) {
         case 'left':
           labelBottomX = 0
@@ -111,6 +114,7 @@ export default function() {
           .text(labelBottom)
       g.select('.d3-chart-axisBottom .d3-chart-axis')
           .attr('transform', `translate(0,${availableHeight})`)
+          .transition(t)
           .call(axisBottom)
     }
 
@@ -120,7 +124,7 @@ export default function() {
     // Top Axis
 
     if (renderTop && scaleTop) {
-      var labelTopX, labelTopDX, labelTopAnchor
+      let labelTopX, labelTopDX, labelTopAnchor
       switch (labelPosTop[1]) {
         case 'left':
           labelTopX = 0
@@ -157,6 +161,7 @@ export default function() {
           .style('text-anchor', labelTopAnchor)
           .text(labelTop)
       g.select('.d3-chart-axisTop .d3-chart-axis')
+          .transition(t)
           .call(axisTop)
     }
 
@@ -166,7 +171,7 @@ export default function() {
     // Left Axis
 
     if (renderLeft && scaleLeft) {
-      var labelLeftX, labelLeftDX, labelLeftAnchor
+      let labelLeftX, labelLeftDX, labelLeftAnchor
       switch (labelPosLeft[1]) {
         case 'top':
           labelLeftX = 0
@@ -204,6 +209,7 @@ export default function() {
           .style('text-anchor', labelLeftAnchor)
           .text(labelLeft)
       g.select('.d3-chart-axisLeft .d3-chart-axis')
+          .transition(t)
           .call(axisLeft)
     }
 
@@ -213,7 +219,7 @@ export default function() {
     // Right Axis
 
     if (renderRight && scaleRight) {
-      var labelRightX, labelRightDX, labelRightAnchor
+      let labelRightX, labelRightDX, labelRightAnchor
       switch (labelPosRight[1]) {
         case 'top':
           labelRightX = 0
@@ -252,6 +258,7 @@ export default function() {
           .text(labelRight)
       g.select('.d3-chart-axisRight .d3-chart-axis')
           .attr('transform', `translate(${availableWidth},0)`)
+          .transition(t)
           .call(axisRight)
     }
 
@@ -450,6 +457,12 @@ export default function() {
   chart.margin = function(_) {
     if (!arguments.length) return margin
     margin = Object.assign({}, margin, _)
+    return chart
+  }
+
+  chart.transition = function(_) {
+    if (!arguments.length) return transition
+    transition = functor(_)
     return chart
   }
 

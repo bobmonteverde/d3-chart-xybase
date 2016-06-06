@@ -4,7 +4,7 @@ SVG chart base with X and Y axes on all 4 sides.
 
 ## Installing
 
-If you use NPM, `npm install d3-chart-xybase`. Otherwise, download the [latest release](https://github.com/bobmonteverde/d3-chart-xybase/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-axis.v0.3.min.js) or as part of [D3 4.0](https://github.com/d3/d3). (Some dependencies are optional.) AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3_chart_xybase` global is exported:
+If you use NPM, `npm install d3-chart-xybase`. Otherwise, download the [latest release](https://github.com/bobmonteverde/d3-chart-xybase/releases/latest). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3_chart_xybase` global is exported:
 
 ```html
 <script src="https://d3js.org/d3-array.v0.7.min.js"></script>
@@ -248,7 +248,7 @@ Default: height => [Math.round( height / 40 )] // where height argument is the o
 
 <a name="width" href="#width">#</a> <i>chart</i>.<b>width</b>(<i>number</i>)
 
-If width is passed, set's chart's overall width to value provided.
+If width is passed, sets chart's overall width to value provided.
 
 If no argument passed, returns current chart's width.
 
@@ -256,7 +256,7 @@ Default: 600
 
 <a name="height" href="#height">#</a> <i>chart</i>.<b>height</b>(<i>number</i>)
 
-If height is passed, set's chart's overall height to value provided.
+If height is passed, sets chart's overall height to value provided.
 
 If no argument passed, returns current chart's height.
 
@@ -264,8 +264,8 @@ Default: 400
 
 <a name="margin" href="#margin">#</a> <i>chart</i>.<b>margin</b>(<i>object</i>)
 
-If margin is passed, set's some or all of the chart's margins.
-
-Default margin: { "top": 10, "right": 10, "bottom": 30, "left": 40 }
+If margin is passed, sets some or all of the chart's margins.
 
 If no argument passed, returns current chart's margin.
+
+Default: { "top": 10, "right": 10, "bottom": 30, "left": 40 }

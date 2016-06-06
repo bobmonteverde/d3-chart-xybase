@@ -1,6 +1,6 @@
 {
   "name": "d3-chart-xybase",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SVG chart base with X and Y axes",
   "keywords": [
     "d3"
